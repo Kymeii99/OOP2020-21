@@ -52,11 +52,11 @@ class CardGame():
         self.open_card.grid(row=0, column=0, padx=2, pady=2)
         self.open_card.photo = the_card
 
-        closed_deck = Button(cards_frame, command=self.pick_card)
+        self.closed_deck = Button(cards_frame, command=self.pick_card)
         closed_card = PhotoImage(file='cards/closed_deck.gif')
-        closed_deck.config(image=closed_card)
-        closed_deck.grid(row=0, column=1, padx=2, pady=2)
-        closed_deck.photo = closed_card
+        self.closed_deck.config(image=closed_card)
+        self.closed_deck.grid(row=0, column=1, padx=2, pady=2)
+        self.closed_deck.photo = closed_card
 
         done_button = Button(button_frame, text="I'm done!")
         done_button.grid(row=0, column=0, pady=12)
@@ -123,15 +123,19 @@ class CardGame():
     # is smaller, greater or equal to 21
     # sets a label
     def check_scores(self):
-        # if self.player_score > 21:
-        #     self.score_label.config(text="You're Busted!")
-        #     self.game_exit()
-        # elif self.player_score < 21:
-        #     self.score_label.config(text="You can continue!")
-        #
-        # # pass  # replace this line by your code
-        # self.score_label.update_idletasks()
-        pass
+        if self.player_score > 21:
+            self.score_label.config(text="Your score: " + str(self.player_score) + " ,You're Busted!")
+        elif self.player_score < 21:
+            self.score_label.config(text="Your score: " + str(self.player_score) + " ,You can continue!")
+        elif self.player_score == 21:
+            self.score_label.config(text="Your score: " + str(self.player_score) + " ,You Won!")
+
+        if self.player_score >= 21:
+            self.closed_deck.config(state=DISABLED)
+        else:
+            self.closed_deck.config(state=NORMAL)
+
+        self.score_label.update_idletasks()
 
     # calculates the new score
     # takes a card argument of type
@@ -144,6 +148,7 @@ class CardGame():
 
         self.score_label.config(text="Your score: " + str(self.player_score))
         self.score_label.update_idletasks()
+        self.check_scores()
 
 
 
