@@ -52,7 +52,7 @@ class CardGame():
         self.open_card.grid(row=0, column=0, padx=2, pady=2)
         self.open_card.photo = the_card
 
-        closed_deck = Button(cards_frame)
+        closed_deck = Button(cards_frame, command=self.pick_card)
         closed_card = PhotoImage(file='cards/closed_deck.gif')
         closed_deck.config(image=closed_card)
         closed_deck.grid(row=0, column=1, padx=2, pady=2)
@@ -66,6 +66,7 @@ class CardGame():
         exit_button.grid(row=2, column=0, pady=13)
 
         self.score_label = Label(score_frame, text="Your score: " + str(self.player_score), justify=LEFT)
+        self.update_score(rand_card)
         self.score_label.pack()
 
         root.mainloop()
@@ -105,21 +106,18 @@ class CardGame():
 
         print(card_list)
         return cards
- 
+
     # called when clicking on the closed deck of cards
     # picks a new card from the card FIFO
     # updates the display
     # updates the score
     def pick_card(self):
-        # next_card = Queue.pop(0)
-        # Queue.append(next_card)
-        #
-        # self.open_card.config(image=next_card[1])
-        # self.open_card.photo = next_card[1]
-
-        return next_card
-
-        # pass  # replace this line by your code
+        new_card = self.the_cards.get()
+        the_card = PhotoImage(file='cards/' + new_card + '.gif')  # need to be changed
+        self.open_card.config(image=the_card)
+        self.open_card.photo = the_card
+        self.open_card.update_idletasks()
+        self.update_score(new_card)
 
     # contains the logic to compare if the score
     # is smaller, greater or equal to 21
@@ -138,8 +136,16 @@ class CardGame():
     # calculates the new score
     # takes a card argument of type
     def update_score(self, card):
-        # self.score_label.update_idletasks()
-        pass
+        carddict = {'T': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'queen': 10,'jack': 10, 'king': 10}
+
+        for key in carddict:
+            if key in card:
+                self.player_score = self.player_score + carddict[key]
+
+        self.score_label.config(text="Your score: " + str(self.player_score))
+        self.score_label.update_idletasks()
+
+
 
     # this method is called when the "Done" button is clicked
     # it means that the game is over and we check the score
