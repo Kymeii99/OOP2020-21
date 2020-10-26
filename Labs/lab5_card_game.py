@@ -58,9 +58,9 @@ class CardGame():
         self.closed_deck.grid(row=0, column=1, padx=2, pady=2)
         self.closed_deck.photo = closed_card
 
-        done_button = Button(button_frame, text="I'm done!")
+        done_button = Button(button_frame, text="I'm done!", command=self.done_playing)
         done_button.grid(row=0, column=0, pady=12)
-        new_game_button = Button(button_frame, text="New Game")
+        new_game_button = Button(button_frame, text="New Game", command=self.reset_game)
         new_game_button.grid(row=1, column=0, pady=13)
         exit_button = Button(button_frame, text="Exit", command=self.game_exit)
         exit_button.grid(row=2, column=0, pady=13)
@@ -140,7 +140,8 @@ class CardGame():
     # calculates the new score
     # takes a card argument of type
     def update_score(self, card):
-        carddict = {'T': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'queen': 10,'jack': 10, 'king': 10}
+        carddict = {'T': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'queen': 10,
+                    'jack': 10, 'king': 10}
 
         for key in carddict:
             if key in card:
@@ -150,8 +151,6 @@ class CardGame():
         self.score_label.update_idletasks()
         self.check_scores()
 
-
-
     # this method is called when the "Done" button is clicked
     # it means that the game is over and we check the score
     # but we don't allow any further game play. When clicking
@@ -159,16 +158,19 @@ class CardGame():
     # should happen. Only options are to ask for a new game or
     # exit the program after this button was pressed.
     def done_playing(self):
-        pass  # replace this line by your code
+        self.score_label.config(text="Your score: " + str(self.player_score) + "\nThanks For Playing! Play again? :)")
+        self.closed_deck.config(state=DISABLED)
+        self.score_label.update_idletasks()
 
     # this method is called when the "New Game" button is clicked
     # resets all variables
     # sets the game's cards to the initial stage, with a freshly
     # shuffled card deck
     def reset_game(self):
-        pass  # replace this line by your code
+        self.player_score = 0
+        self.the_cards = self.load_cards()
+        self.pick_card()
 
 
 # object creation here:
-
 app = CardGame()
