@@ -45,8 +45,9 @@ class CardGame():
         score_frame.grid(row=1, column=0, columnspan=2)
 
         # add elements into the frames
+        rand_card = self.the_cards.get()
         self.open_card = Button(cards_frame)
-        the_card = PhotoImage(file='cards/queen_hearts.gif')
+        the_card = PhotoImage(file='cards/' + rand_card + '.gif')  # need to be changed
         self.open_card.config(image=the_card)
         self.open_card.grid(row=0, column=0, padx=2, pady=2)
         self.open_card.photo = the_card
@@ -78,36 +79,67 @@ class CardGame():
     # puts everything in a list first as it needs to be shuffled
     # returns a queue
     def load_cards(self):
-        cards = Queue(maxsize=52) #change this if you want to use a different data structure
+        cards = Queue(maxsize=52)  # change this if you want to use a different data structure
         suits = ("hearts", "diamonds", "spades", "clubs")
         people = ("queen", "jack", "king")
         card_list = []
 
         # your code goes here:
+        # carddict = {'T': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'queen': 10,'jack': 10, 'king': 10}
+        # dc = carddict.copy()
+        #
+        # Queue.put(dc)
+
+        for suit in suits:
+            for card in range(1, 11):  # number cards from 1 to 10
+                card_list.append(str(card) + '_' + suit)
+
+            for card in people:
+                card_list.append(card + '_' + suit)
 
         shuffle(card_list)
 
         # your code goes here:
+        for i in range(len(card_list)):
+            cards.put(card_list[i])
 
+        print(card_list)
         return cards
-
+ 
     # called when clicking on the closed deck of cards
     # picks a new card from the card FIFO
     # updates the display
     # updates the score
     def pick_card(self):
-        pass  # replace this line by your code
+        # next_card = Queue.pop(0)
+        # Queue.append(next_card)
+        #
+        # self.open_card.config(image=next_card[1])
+        # self.open_card.photo = next_card[1]
+
+        return next_card
+
+        # pass  # replace this line by your code
 
     # contains the logic to compare if the score
     # is smaller, greater or equal to 21
     # sets a label
     def check_scores(self):
-        pass  # replace this line by your code
+        # if self.player_score > 21:
+        #     self.score_label.config(text="You're Busted!")
+        #     self.game_exit()
+        # elif self.player_score < 21:
+        #     self.score_label.config(text="You can continue!")
+        #
+        # # pass  # replace this line by your code
+        # self.score_label.update_idletasks()
+        pass
 
     # calculates the new score
     # takes a card argument of type
     def update_score(self, card):
-        pass  # replace this line by your code
+        # self.score_label.update_idletasks()
+        pass
 
     # this method is called when the "Done" button is clicked
     # it means that the game is over and we check the score
